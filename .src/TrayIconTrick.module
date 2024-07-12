@@ -1,0 +1,10 @@
+' Gambas module file
+
+' Koko trick
+Public Sub Main()
+
+  FMain.Show() 
+  Wait 0.02
+  FMain.FirstInit()
+
+End

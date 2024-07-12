@@ -1,0 +1,75 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,85,114)
+  Background = &HDFFFFF&
+  Resizable = False
+  { Frame2 Frame
+    MoveScaled(2,56,81,51)
+    Text = ("Datensicherung - Pfade und Dateien")
+    Alignment = Align.Left
+  }
+  { Frame1 Frame
+    MoveScaled(2,2,81,52)
+    Text = ("Ordnerzugriff")
+    Alignment = Align.Left
+  }
+  { FileView1 FileView
+    MoveScaled(3,21,79,32)
+    Background = &HDFFFFF&
+    ToolTip = ("Mit Strg+Esc zurück zu Home wechseln.")
+    Border = False
+    ShowDirectory = True
+  }
+  { Button1 Button
+    MoveScaled(2,108,81,4)
+    Font = Font["12"]
+    ToolTip = ("Übernimmt die Elemente der Liste für die Datensicherung.")
+    Text = ("Einstellungen speichern")
+  }
+  { TextBox1 TextBox
+    MoveScaled(3,101,79,5)
+    Visible = False
+    Font = Font["12"]
+    ToolTip = ("max. 15 Zeichen")
+    Text = ("Speicherpfad")
+    Alignment = Align.Center
+    MaxLength = 15
+    Border = False
+  }
+  { TextLabel2 TextLabel
+    MoveScaled(4,6,77,13)
+    Font = Font["12"]
+    Text = ("Was soll gesichert werden? Bitte die entsprechenden Pfade und Dateien\nin das untere Listenfeld ziehen. Einstellungen speichern und mit dem\nBackup kann begonnen werden.\nTooltipps der Elemente geben zusätzliche Hilfe.")
+    Alignment = Align.Left
+  }
+  { TextBox2 TextBox
+    MoveScaled(3,89,79,5)
+    Font = Font["12"]
+    ToolTip = ("Die vorherige Auswahl bezog sich auf diese Daten.")
+    Text = ("Quellpfad")
+    Alignment = Align.Center
+    ReadOnly = True
+    Border = False
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(3,95,79,5)
+    Visible = False
+    Font = Font["12"]
+    Text = ("Geben Sie hier bitte ein Verzeichnisnamen \nfür die Backup-Dateien an. ")
+    Alignment = Align.Center
+  }
+  { TextLabel3 TextLabel
+    MoveScaled(3,83,79,5)
+    Font = Font["12"]
+    Text = ("Diese Quellen wurden zuvor ausgewählt. ")
+    Alignment = Align.Center
+  }
+  { ListBox1 ListBox
+    MoveScaled(3,60,79,22)
+    Font = Font["12"]
+    ToolTip = ("Mit Doppelklick ein Element entfernen.")
+    Drop = True
+    Border = False
+  }
+}

@@ -1,0 +1,27 @@
+# Gambas Project File 3.0
+Title=Data-Backup
+Startup=TrayIconTrick
+Icon=Icon1.png
+Version=0.1.0
+Component=gb.image
+Component=gb.gui
+Component=gb.form
+Component=gb.dbus
+Component=gb.desktop
+Component=gb.gui.trayicon
+Description="Einfaches \"One-Klick\" Backup Tool."
+Authors="Mintnix"
+TabSize=2
+Translate=1
+Language=de
+Maintainer=Mintnix
+Vendor=Mintnix
+Address=pcspezialist@arcor.de
+Url=www.openyourlinux.blogspot.de
+License=General Public License
+PackageName=databackup-0.1.0
+Packager=1
+Systems=ubuntu
+Menus=ubuntu:"Applications/File Management"
+Categories=ubuntu:"FileTools"
+Groups=ubuntu:"utils"

@@ -1,0 +1,58 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,46,13)
+  Font = Font["12"]
+  Background = &HDFFFFF&
+  PopupMenu = "Menu1"
+  Icon = Picture["Icon1.png"]
+  Resizable = False
+  Border = False
+  Centered = True
+  { Menu1 Menu
+    Text = ("Menu1")
+    Visible = False
+    { Menu9 Menu
+      Text = ("Backup starten")
+    }
+    { Menu10 Menu
+    }
+    { Menu3 Menu
+      Text = ("Einstellungen")
+    }
+    { Menu8 Menu
+      Text = ("Nur in der Leiste anzeigen")
+    }
+    { Menu7 Menu
+    }
+    { Menu11 Menu
+      Text = ("Online Programminfo")
+    }
+    { Menu4 Menu
+      Text = ("Hilfe")
+    }
+    { Menu5 Menu
+      Text = ("Über ") & "..."
+    }
+    { Menu6 Menu
+    }
+    { Menu2 Menu
+      Text = ("Exit")
+    }
+  }
+  { Button1 Button
+    MoveScaled(1,1,44,11)
+    Font = Font["Bold,12"]
+    Background = &H00A025&
+    ToolTip = ("Linksklick = Startet das Backup. \nRechtsklick = Öffnet das Kontextmenü.   ")
+    Text = ("Backup starten?")
+    Picture = Picture["icon:/22/save"]
+  }
+  { TrayIcon1 #TrayIcon
+    #MoveScaled(36,3)
+    Visible = True
+    Tooltip = ("Linksklick = Backup starten.\nRechtsklick = Zeigt Menü.")
+    Picture = Picture.Load("Icon1.png")
+    PopupMenu = "Menu1"
+  }
+}

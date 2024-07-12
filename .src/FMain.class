@@ -1,0 +1,149 @@
+' Gambas class file
+
+'' Variablen festlegen
+Static Public Version As String = Application.version
+Public sSpeicherort As String
+Public sBackupquelle As String
+Public sZieldatei As String
+
+
+'' Programmfunktionen hinzufügen
+Public Sub Form_Open()
+  ' Was soll passiert bei Start?
+  If Exist("~/DATA-BACKUP") = False Then
+    Message("Backup-Verzeichnis wird angelegt unter ~/DATA-BACKUP.", "OK") 
+    Shell "mkdir DATA-BACKUP" Wait 
+  Endif
+  sSpeicherort = "DATA-BACKUP"
+  sZieldatei = "BACKUP_" & Year(Now) & "-" & Month(Now) & "-" & Day(Now) & ".tar"
+  
+  'Ladefunktion
+  Dim hFile As Stream
+  Dim Ladetext As String
+  
+  'Konfigurationsdatei wird automatisch angelegt
+   If Exist("~/.data-backup.txt") = False Then
+    Shell "touch ~/.data-backup.txt" Wait
+  Endif
+  'hier wird geladen und in Variablen gefüllt
+  hFile = Open "~/.data-backup.txt" For Read
+
+   Line Input #hFile, Ladetext
+   Print Ladetext
+   Ladetext = Replace(Ladetext, ",", " ")
+   Print Ladetext
+   sBackupquelle = " " & Ladetext     'hier ein Leerzeichen einfügen, sonst klemmt es
+End
+
+Public Sub FirstInit()
+  'Programm gleich nach Start ausblenden
+  Menu8.Text = "Programm wieder anzeigen"
+  Me.Visible = False
+End
+
+Public Sub BackItUp()
+  'Backup starten
+  Dim bOk As Boolean
+
+  Print sZieldatei
+  Print sSpeicherort
+  Print sBackupquelle
+  Print sSpeicherort &/ sZieldatei
+
+  If sBackupquelle = "" Or If sBackupquelle = " " Then 
+     Button1.Width = 308
+     Button1.Background = &H99A025&
+     Button1.Text = "Nichts ausgewählt" 
+     Wait 0.6
+     Button1.Width = 308
+     Button1.Text = "Backup starten?"
+     Button1.Background = &H00A025& 
+     Wait 1
+     Menu8.Text = "Programm wieder anzeigen"
+     Me.Visible = False
+  Else If Exist(User.Home &/ sSpeicherort &/ sZieldatei) Then 
+     Button1.Width = 308
+     Button1.Background = &00FF0000
+     Button1.Text = "Füge zum Backup hinzu ..."
+     TrayIcon1.Picture = Picture.Load("Icon2.png")
+     'TrayIcon1.Picture.Refresh
+     Wait 1 
+     Shell "tar -uvf " & sSpeicherort &/ sZieldatei & sBackupquelle Wait 
+     bOk = True
+  Else If Not Exist(User.Home &/ sSpeicherort &/ sZieldatei) Then 
+     Button1.Width = 308
+     Button1.Background = &00FF0000
+     Button1.Text = "Lege Backup an ..."
+     TrayIcon1.Picture = Picture.Load("Icon2.png")
+     Wait 1
+     Shell "tar -vcf " & sSpeicherort &/ sZieldatei & sBackupquelle Wait
+     bOk = True
+  Endif
+
+  If bOk = True Then
+    Button1.Width = 308
+    Button1.Background = &H77A025&
+    Button1.Text = "Backup fertig!" 
+    Wait 1
+    TrayIcon1.Picture = Picture.Load("Icon1.png")
+    Button1.Width = 308
+    Button1.Text = "Backup starten?"
+    Button1.Background = &H00A025&
+    Wait 1
+    Menu8.Text = "Programm wieder anzeigen"
+    Me.Visible = False
+  Endif 
+End 
+
+Public Sub Button1_Click()
+  'Backup über den großen Knopf
+  BackItUp()
+End
+
+Public Sub Menu2_Click()
+  'Programm beenden
+  TrayIcon1.Delete
+  Me.Close()
+End
+
+Public Sub Menu3_Click()
+  'Zeige die Einstellungen
+  Einstellung.Show
+End
+
+Public Sub Menu4_Click()
+  'Hilfe
+  Message.Info("Starten des Backups erstellt eine neue Datei mit Namen 'BACKUP_Jahr-Monat-Tag.tar' \nim Verzeichnis '/home/user/DATA-BACKUP/'. Existiert diese bereits werden die ausgewählten Dateien dem Backup hinzugefügt. Man beachte, vorhandene Dateien im Backup werden nicht überschrieben, sondern zusätzlich angehängt. Somit kann die Backupdatei schnell in ihrer Größe wachsen und entsprechend doppelte Einträge enthalten. \nBeim Widerherstellen aus der Archivdatei sollte dies beachtet werden. \nIn späteren Programmversionen könnten fehlende Funktionen nachgereicht werden. Das Programm befindet sich in einem frühen, unfertigen Zustand.", "Verstanden")
+End
+
+Public Sub Menu5_Click()
+  'Info
+  Message.Info("Data-Backup \nVersion: " & Version, "Ok")
+End
+
+Public Sub Menu8_Click()
+  ' Programmfenster anzeigen oder ausblenden
+  If Me.Visible = False Then
+    Me.Visible = True
+    Menu8.Text = "Nur in Leiste anzeigen"
+  Else 
+    Me.Visible = False
+    Menu8.Text = "Programm wieder anzeigen"
+  Endif 
+End
+
+Public Sub Menu9_Click()
+  'Backup über Menüeintrag
+  BackItUp()
+End
+
+Public Sub TrayIcon1_Click()
+  ' Trayicon einfacher Klick
+   Me.Visible = True
+   BackItUp
+End
+
+Public Sub Menu11_Click()
+  ' URL öffnen
+  Desktop.Open("https://openyourlinux.blogspot.com/p/data-backup.html")
+End
