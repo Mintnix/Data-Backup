@@ -1,3 +1,19 @@
+* Sun Jul 14 2024 Mintnix <pcspezialist@arcor.de> 0.1.1
+- Neuerstellung mit Abhängigkeiten
+- zurück zu gb.gtk3
+
+* Sun Jul 14 2024 Mintnix <pcspezialist@arcor.de> 0.1.1
+- Änderung Abhängigkeiten
+- zurück zu gb.gui
+- zusätzlich gambas3-gb-gtk3-x11 und gambas3-gb-dbus-trayicon als Extra Abhängigkeiten hinzugefügt, da es sonst zu Fehlern bei der Installation unter (Mint) Xfce kommt.
+
+* Sun Jul 14 2024 Mintnix <pcspezialist@arcor.de> 0.1.1
+- Änderung der Abhängigkeiten
+- gb.gtk3 wieder entfernt und gb.gui eingestellt
+
+* Sun Jul 14 2024 Mintnix <pcspezialist@arcor.de> 0.1.1
+- Änderungen an den Abhängigkeiten
+
 * Fri Jul 12 2024 Mintnix <pcspezialist@arcor.de> 0.1.0
 - Änderung Menüeintrag
 
