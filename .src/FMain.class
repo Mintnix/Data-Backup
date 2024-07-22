@@ -145,5 +145,10 @@ End
 
 Public Sub Menu11_Click()
   ' URL öffnen
-  Desktop.Open("https://openyourlinux.blogspot.com/p/data-backup.html")
+  Print Desktop.Type
+  If Desktop.Type = "KDE" Then 
+    Shell "firefox https://openyourlinux.blogspot.com/p/data-backup.html"
+  Else 
+    Desktop.Open("https://openyourlinux.blogspot.com/p/data-backup.html")
+  Endif 
 End

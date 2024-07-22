@@ -1,3 +1,8 @@
+* Mon Jul 22 2024 Mintnix <pcspezialist@arcor.de> 0.1.2
+- Button im Einstellungsdialog für "Liste löschen" hinzugefügt
+- Wayland Abhängigkeit aufgelöst
+- KDE spezifische Abhängigkeiten versucht aufzulösen
+
 * Sun Jul 14 2024 Mintnix <pcspezialist@arcor.de> 0.1.1
 - Neuerstellung mit Abhängigkeiten
 - zurück zu gb.gtk3

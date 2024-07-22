@@ -99,6 +99,13 @@ Public Sub ListBox1_DblClick()
   Print ListBox1.Index
   If ListBox1.Index = -1 Then Return 
   ListBox1.Remove(ListBox1.Index)
-  'ListBox1.Refresh
 
+End
+
+Public Sub Button2_Click()
+  'Liste komplett löschen
+  ListBox1.SelectAll
+  ListBox1.Clear
+  Wait 
+  
 End

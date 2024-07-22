@@ -8,6 +8,13 @@
     MoveScaled(2,56,81,51)
     Text = ("Datensicherung - Pfade und Dateien")
     Alignment = Align.Left
+    { Button2 Button
+      MoveScaled(66,27,14,3)
+      Font = Font["10"]
+      Foreground = Color.Pink
+      ToolTip = ("Leert die komplette Liste auf einmal.")
+      Text = ("Löschen")
+    }
   }
   { Frame1 Frame
     MoveScaled(2,2,81,52)
@@ -53,17 +60,17 @@
     Border = False
   }
   { TextLabel1 TextLabel
-    MoveScaled(3,95,79,5)
+    MoveScaled(3,96,46,5)
     Visible = False
     Font = Font["12"]
-    Text = ("Geben Sie hier bitte ein Verzeichnisnamen \nfür die Backup-Dateien an. ")
-    Alignment = Align.Center
+    Text = ("Der Ort für die Backup-Dateien. ")
+    Alignment = Align.Left
   }
   { TextLabel3 TextLabel
-    MoveScaled(3,83,79,5)
+    MoveScaled(3,84,46,5)
     Font = Font["12"]
     Text = ("Diese Quellen wurden zuvor ausgewählt. ")
-    Alignment = Align.Center
+    Alignment = Align.Left
   }
   { ListBox1 ListBox
     MoveScaled(3,60,79,22)
