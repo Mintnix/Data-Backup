@@ -3,6 +3,7 @@
 '' Variablen festlegen
 Static Public Version As String = Application.version
 Public sSpeicherort As String
+Public sSpeicherpfad As String = User.Home
 Public sBackupquelle As String
 Public sZieldatei As String
 
@@ -10,17 +11,14 @@ Public sZieldatei As String
 '' Programmfunktionen hinzufügen
 Public Sub Form_Open()
   ' Was soll passiert bei Start?
-  If Exist("~/DATA-BACKUP") = False Then
-    Message("Backup-Verzeichnis wird angelegt unter ~/DATA-BACKUP.", "OK") 
-    Shell "mkdir DATA-BACKUP" Wait 
-  Endif
   sSpeicherort = "DATA-BACKUP"
   sZieldatei = "BACKUP_" & Year(Now) & "-" & Month(Now) & "-" & Day(Now) & ".tar"
   
   'Ladefunktion
   Dim hFile As Stream
-  Dim Ladetext As String
-  
+  Dim sLine1 As String    ' Ladetextzeile
+  Dim sLine2 As String    ' individueller Speicherpfad
+    
   'Konfigurationsdatei wird automatisch angelegt
    If Exist("~/.data-backup.txt") = False Then
     Shell "touch ~/.data-backup.txt" Wait
@@ -28,27 +26,37 @@ Public Sub Form_Open()
   'hier wird geladen und in Variablen gefüllt
   hFile = Open "~/.data-backup.txt" For Read
 
-   Line Input #hFile, Ladetext
-   Print Ladetext
-   Ladetext = Replace(Ladetext, ",", " ")
-   Print Ladetext
-   sBackupquelle = " " & Ladetext     'hier ein Leerzeichen einfügen, sonst klemmt es
+   Line Input #hFile, sLine1
+   Line Input #hFile, sLine2
+   Print sLine1
+   Print sLine2
+   sLine1 = Replace(sLine1, ",", " ")
+   Print sLine1
+   sBackupquelle = " " & sLine1     'hier ein Leerzeichen einfügen, sonst klemmt es
+   If sLine2 <= " " Then sSpeicherpfad = sSpeicherpfad Else sSpeicherpfad = sLine2
+   Print sSpeicherpfad
+   
 End
 
 Public Sub FirstInit()
   'Programm gleich nach Start ausblenden
-  Menu8.Text = "Programm wieder anzeigen"
-  Me.Visible = False
+   Me.Visible = False
 End
 
 Public Sub BackItUp()
   'Backup starten
   Dim bOk As Boolean
 
+  Print sSpeicherpfad
   Print sZieldatei
   Print sSpeicherort
   Print sBackupquelle
   Print sSpeicherort &/ sZieldatei
+  'Speicherort anlegen, falls nicht da
+   If Exist(sSpeicherpfad &/ sSpeicherort) = False Then
+    Message("Backup-Verzeichnis wird angelegt unter: " & sSpeicherpfad &/ sSpeicherort, "OK") 
+    Shell "mkdir " & sSpeicherpfad &/ sSpeicherort Wait 
+  Endif
 
   If sBackupquelle = "" Or If sBackupquelle = " " Then 
      Button1.Width = 308
@@ -59,24 +67,23 @@ Public Sub BackItUp()
      Button1.Text = "Backup starten?"
      Button1.Background = &H00A025& 
      Wait 1
-     Menu8.Text = "Programm wieder anzeigen"
      Me.Visible = False
-  Else If Exist(User.Home &/ sSpeicherort &/ sZieldatei) Then 
+  Else If Exist(sSpeicherpfad &/ sSpeicherort &/ sZieldatei) Then 
      Button1.Width = 308
      Button1.Background = &00FF0000
      Button1.Text = "Füge zum Backup hinzu ..."
      TrayIcon1.Picture = Picture.Load("Icon2.png")
      'TrayIcon1.Picture.Refresh
      Wait 1 
-     Shell "tar -uvf " & sSpeicherort &/ sZieldatei & sBackupquelle Wait 
+     Shell "tar -uvf " & sSpeicherpfad &/ sSpeicherort &/ sZieldatei & sBackupquelle Wait 
      bOk = True
-  Else If Not Exist(User.Home &/ sSpeicherort &/ sZieldatei) Then 
+  Else If Not Exist(sSpeicherpfad &/ sSpeicherort &/ sZieldatei) Then 
      Button1.Width = 308
      Button1.Background = &00FF0000
      Button1.Text = "Lege Backup an ..."
      TrayIcon1.Picture = Picture.Load("Icon2.png")
      Wait 1
-     Shell "tar -vcf " & sSpeicherort &/ sZieldatei & sBackupquelle Wait
+     Shell "tar -cvf " & sSpeicherpfad &/ sSpeicherort &/ sZieldatei & sBackupquelle Wait
      bOk = True
   Endif
 
@@ -90,7 +97,7 @@ Public Sub BackItUp()
     Button1.Text = "Backup starten?"
     Button1.Background = &H00A025&
     Wait 1
-    Menu8.Text = "Programm wieder anzeigen"
+    'Menu8.Text = "Programm wieder anzeigen"
     Me.Visible = False
   Endif 
 End 
@@ -113,7 +120,7 @@ End
 
 Public Sub Menu4_Click()
   'Hilfe
-  Message.Info("Starten des Backups erstellt eine neue Datei mit Namen 'BACKUP_Jahr-Monat-Tag.tar' \nim Verzeichnis '/home/user/DATA-BACKUP/'. Existiert diese bereits werden die ausgewählten Dateien dem Backup hinzugefügt. Man beachte, vorhandene Dateien im Backup werden nicht überschrieben, sondern zusätzlich angehängt. Somit kann die Backupdatei schnell in ihrer Größe wachsen und entsprechend doppelte Einträge enthalten. \nBeim Widerherstellen aus der Archivdatei sollte dies beachtet werden. \nIn späteren Programmversionen könnten fehlende Funktionen nachgereicht werden. Das Programm befindet sich in einem frühen, unfertigen Zustand.", "Verstanden")
+  Hilfe.Show
 End
 
 Public Sub Menu5_Click()
@@ -125,10 +132,8 @@ Public Sub Menu8_Click()
   ' Programmfenster anzeigen oder ausblenden
   If Me.Visible = False Then
     Me.Visible = True
-    Menu8.Text = "Nur in Leiste anzeigen"
   Else 
     Me.Visible = False
-    Menu8.Text = "Programm wieder anzeigen"
   Endif 
 End
 
@@ -151,4 +156,9 @@ Public Sub Menu11_Click()
   Else 
     Desktop.Open("https://openyourlinux.blogspot.com/p/data-backup.html")
   Endif 
+End
+
+Public Sub Menu12_Click()
+  'Anicht vom Speicherort
+  Desktop.Open(sSpeicherpfad &/ sSpeicherort)
 End

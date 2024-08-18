@@ -2,28 +2,32 @@
 
 Public sAuswahlArray As String[]
 Public Textgesamt As String
+Public Speicherpfad As String
 
 Public Sub Form_Open()
-  ' was soll nach Öffnen des Fensters geschehen?
+  'was soll nach Öffnen des Fensters geschehen?
   TextBox2.Text = FMain.sBackupquelle
+  Print TextBox2.Text.Len
   FileView1.Dir = User.Home
-  
-  'Ladefunktion
+
+  ''Ladefunktion
   Dim hFile As Stream
   'Konfigurationsdatei wird automatisch angelegt
-   If Exist("~/.data-backup.txt") = False Then
+  If Exist("~/.data-backup.txt") = False Then
     Shell "touch ~/.data-backup.txt" Wait
   Endif
   'hier wird geladen und in Variablen gefüllt
   hFile = Open "~/.data-backup.txt" For Read
-
-   Line Input #hFile, Textgesamt
-   Print Textgesamt
-
+  Line Input #hFile, Textgesamt
+  Line Input #hFile, Speicherpfad
+  Print Textgesamt
   'Die ListBox (Array) mit den Daten füllen
   sAuswahlArray = Split(Textgesamt)
   ListBox1.List = sAuswahlArray
-
+  'Speicherort
+  If Speicherpfad <= " " Then Speicherpfad = User.Home Else Speicherpfad = Speicherpfad
+  DirBox1.Value = Speicherpfad
+   Print "Speicherpfad: " & Speicherpfad 
 End
 
 
@@ -31,6 +35,11 @@ Public Sub Button1_Click()
   '' Speichern Knopf - was soll passieren
   Dim i As Integer
   Dim Text As String
+  
+  Speicherpfad = DirBox1.Value
+  Print DirBox1.Value
+  If Speicherpfad <= " " Then Speicherpfad = User.Home 
+  FMain.sSpeicherpfad = Speicherpfad
   
   sAuswahlArray = ListBox1.List
   Wait 
@@ -42,64 +51,78 @@ Public Sub Button1_Click()
       Print Text
     Next
       FMain.sBackupquelle = Text
-      Print "Backupquelle" & Text
+      'Print "Backupquelle" & Text
   Endif 
 
   Wait 1
-  Print "Das stand in der geladenen Textzeile aus der Datei:" & Textgesamt
+  Print "Das stand in der geladenen Textzeile aus der Datei: " & Textgesamt
   Textgesamt = sAuswahlArray.Join()
-  Print "So wird abgespeichert:" & Textgesamt
+  Print "So wird abgespeichert: " & Textgesamt
+  Print "Dort zu finden: " & Speicherpfad
   'Text in Datei speichern
-  File.Save("~/.data-backup.txt", Textgesamt)
+  File.Save("~/.data-backup.txt", Textgesamt & gb.NewLine & Speicherpfad)
 
   Me.Close
-
 End
 
 
 Public Sub FileView1_Activate()
   'Doppelklick im FileView wechselt Verzeichnis
   Dim sVerzeichnis As String
-  
+
   Print FileView1.Current
   sVerzeichnis = FileView1.Current
-  FileView1.Dir = FileView1.Dir &/ sVerzeichnis
-  Print FileView1.Dir
+  If IsDir(FileView1.Path) = True Then FileView1.Dir = FileView1.Dir &/ sVerzeichnis    'nur wenn Verzeichnis ist ein Wechsel hinein möglich
+  Print FileView1.Path
   FileView1.Reload
-
 End
 
 
 Public Sub FileView1_KeyPress()
-  ''Strg + Esc = wechselt zurück zum Homeverzeichnis
-  If Key.Code = Key.Escape And If Key.Control Then 
-    FileView1.Dir = User.Home
-  Else
-    FileView1.Reload 
-   ' ListBox1.List = sAuswahlArray  
-  Endif
-
+  'Strg + Esc oder Shift + Esc = wechselt zurück zum Homeverzeichnis
+  If Key.Code = Key.Escape And If Key.Shift Or Key.Control Then FileView1.Dir = User.Home
 End
 
 
-Public Sub FileView1_MouseDrag()
+'' Test der Funktion aus dem Gambas-Forum von Bonus, vielen Dank.
+Public Sub FileView1_MouseMove()
   'Drag n Drop Funktion - was soll an der Maus hängen?
-  FileView1.Drag(FileView1.Current)
-
+  If Not FileView1.Selected Then Return ' Versuchen Sie nicht, das Ziehen einer Datei mit dem Ziehen einer Auswahl zu verwechseln
+  Dim aData As String[] = FileView1.Selection
+ 
+  For c As Integer = 0 To aData.Max
+    aData[c] = FileView1.Dir &/ aData[c]
+  Next
+  If Mouse.Left Then FileView1.Drag(aData, "text/uri-list")
 End
-
+ 
 Public Sub ListBox1_Drop()
   'Drag n Drop - das fliegt in das Array in der ListBox, gleich mit Gänsefüßchen 
-  ListBox1.Add(Quote(FileView1.Dir &/ FileView1.Current))
-
+  If Not Drag.Formats.Exist("text/uri-list") Then Return
+  Print Drag.Paste
+  For Each sFile As String In Drag.Paste("text/uri-list")
+    ListBox1.Add(If(InStr(sFile, " "), Shell(sFile), sFile))  'man kann auch Shell$ statt Shell verwenden
+  Next
 End
 
+' Public Sub FileView1_MouseDrag()
+  '' Das hat nicht funktioniert, weil das FileView eine eigene Funktion von Mouse_Drag hat. Das geht automatisch.
+'   'Drag n Drop Funktion - was soll an der Maus hängen?
+'   FileView1.Drag(FileView1.Current) 
+' 
+' End
+
+' Public Sub ListBox1_Drop()
+  '' Die eigentliche, ursprüngliche Funktion- das funktioniert auch.
+'   'Drag n Drop - das fliegt in das Array in der ListBox, gleich mit Gänsefüßchen 
+'   ListBox1.Add(Quote(FileView1.Dir &/ FileView1.Current))
+' End
+
 Public Sub ListBox1_DblClick()
-  '' Element löschen mit Doppelklick
+  ' Element löschen mit Doppelklick
   Print ListBox1.Index
   If ListBox1.Index = -1 Then Return 
   ListBox1.Remove(ListBox1.Index)
-
 End
 
 Public Sub Button2_Click()
@@ -107,5 +130,4 @@ Public Sub Button2_Click()
   ListBox1.SelectAll
   ListBox1.Clear
   Wait 
-  
 End
