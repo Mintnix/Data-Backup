@@ -1,73 +1,82 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,100,104)
+  MoveScaled(0,0,100,99)
   Background = &HDFFFFF
   Resizable = False
   { Frame2 Frame
-    MoveScaled(2,56,96,40)
+    MoveScaled(2,54,96,37)
     Text = ("Datensicherung - Pfade und Dateien")
     Alignment = Align.Left
     { Button2 Button
-      MoveScaled(79,23,16,3)
+      MoveScaled(79,22,16,3)
       Font = Font["10"]
       Foreground = Color.Pink
       ToolTip = ("Leert die komplette Liste auf einmal.")
       Text = ("Löschen")
     }
     { DirBox1 DirBox
-      MoveScaled(39,34,56,4)
+      MoveScaled(39,32,56,4)
       Font = Font["11"]
       ToolTip = ("Individueller Speicherpfad für \ndie Backup-Dateien festlegen.")
     }
+    { SwitchButton1 SwitchButton
+      MoveScaled(24,22,8,4)
+    }
+    { TextLabel4 TextLabel
+      MoveScaled(1,22,21,4)
+      Font = Font["10"]
+      ToolTip = ("Komprimierung ein- oder ausschalten")
+      Text = ("Komprimierung: AUS")
+      Alignment = Align.Left
+    }
   }
   { Frame1 Frame
-    MoveScaled(2,2,96,52)
+    MoveScaled(2,2,96,51)
     Text = ("Ordnerzugriff")
     Alignment = Align.Left
   }
   { FileView1 FileView
-    MoveScaled(3,17,94,36)
+    MoveScaled(3,16,94,36)
     Background = &HDFFFFF
     ToolTip = ("Mittels Doppelklick oder Space in den Ordner wechseln.\nMit Strg+Esc oder Shift+Esc zurück zu Home springen.\n\nAchtung, unter Xfce ist Strg+Esc ggf. bereits vom\nSystem belegt. Versuchen Sie Shift+Esc zu benutzen.")
     Border = False
     ShowDirectory = True
   }
   { Button1 Button
-    MoveScaled(2,98,96,4)
+    MoveScaled(2,93,96,4)
     Font = Font["12"]
     ToolTip = ("Übernimmt die Elemente der Liste für die Datensicherung.")
     Text = ("Einstellungen speichern")
   }
   { TextLabel2 TextLabel
-    MoveScaled(4,6,92,10)
+    MoveScaled(4,5,92,10)
     Font = Font["12"]
     Text = ("Was soll gesichert werden? Bitte die entsprechenden Pfade und Dateien\nin das untere Listenfeld ziehen. Einstellungen speichern und mit dem\nBackup kann begonnen werden.\nTooltipps der Elemente geben zusätzliche Hilfe.")
     Alignment = Align.Left
   }
   { TextBox2 TextBox
-    MoveScaled(3,84,94,4)
+    MoveScaled(41,81,56,4)
     Font = Font["10"]
     ToolTip = ("Die vorherige Auswahl bezog sich auf diese Daten.")
     Text = ("Quellpfad")
     Alignment = Align.Center
     ReadOnly = True
-    Border = False
   }
   { TextLabel1 TextLabel
-    MoveScaled(3,90,37,4)
+    MoveScaled(3,86,37,4)
     Font = Font["10"]
     Text = ("Wo soll das Backup gespeichert werden. ")
     Alignment = Align.Left
   }
   { TextLabel3 TextLabel
-    MoveScaled(3,80,46,4)
+    MoveScaled(3,81,36,4)
     Font = Font["10"]
     Text = ("Diese Quellen wurden zuvor ausgewählt. ")
     Alignment = Align.Left
   }
   { ListBox1 ListBox
-    MoveScaled(3,60,94,18)
+    MoveScaled(3,57,94,18)
     Font = Font["12"]
     ToolTip = ("Mit Doppelklick ein Element entfernen.")
     Drop = True

@@ -6,6 +6,8 @@ Public sSpeicherort As String
 Public sSpeicherpfad As String = User.Home
 Public sBackupquelle As String
 Public sZieldatei As String
+Static Public sKompri As Integer
+
 
 
 '' Programmfunktionen hinzufügen
@@ -18,6 +20,7 @@ Public Sub Form_Open()
   Dim hFile As Stream
   Dim sLine1 As String    ' Ladetextzeile
   Dim sLine2 As String    ' individueller Speicherpfad
+  Dim sLine3 As String   ' Komprimierung an/aus
     
   'Konfigurationsdatei wird automatisch angelegt
    If Exist("~/.data-backup.txt") = False Then
@@ -28,13 +31,17 @@ Public Sub Form_Open()
 
    Line Input #hFile, sLine1
    Line Input #hFile, sLine2
+   Line Input #hFile, sLine3
    Print sLine1
    Print sLine2
+   Print sLine3
    sLine1 = Replace(sLine1, ",", " ")
    Print sLine1
    sBackupquelle = " " & sLine1     'hier ein Leerzeichen einfügen, sonst klemmt es
    If sLine2 <= " " Then sSpeicherpfad = sSpeicherpfad Else sSpeicherpfad = sLine2
    Print sSpeicherpfad
+   If sLine3 = "1" Then sKompri = 1 Else sKompri = 0
+   Print sKompri
    
 End
 
@@ -162,3 +169,4 @@ Public Sub Menu12_Click()
   'Anicht vom Speicherort
   Desktop.Open(sSpeicherpfad &/ sSpeicherort)
 End
+

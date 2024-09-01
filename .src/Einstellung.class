@@ -28,6 +28,8 @@ Public Sub Form_Open()
   If Speicherpfad <= " " Then Speicherpfad = User.Home Else Speicherpfad = Speicherpfad
   DirBox1.Value = Speicherpfad
    Print "Speicherpfad: " & Speicherpfad 
+    'Kompri
+    If FMain.sKompri = 1 Then SwitchButton1.Value = True
 End
 
 
@@ -60,7 +62,7 @@ Public Sub Button1_Click()
   Print "So wird abgespeichert: " & Textgesamt
   Print "Dort zu finden: " & Speicherpfad
   'Text in Datei speichern
-  File.Save("~/.data-backup.txt", Textgesamt & gb.NewLine & Speicherpfad)
+  File.Save("~/.data-backup.txt", Textgesamt & gb.NewLine & Speicherpfad & gb.NewLine & FMain.sKompri)
 
   Me.Close
 End
@@ -130,4 +132,18 @@ Public Sub Button2_Click()
   ListBox1.SelectAll
   ListBox1.Clear
   Wait 
+End
+
+Public Sub SwitchButton1_Click()
+
+    If SwitchButton1.Value = True Then
+        FMain.sKompri = 1
+        TextLabel4.Text = "Komprimierung: AN"
+        Print FMain.sKompri
+        Else 
+            FMain.sKompri = 0
+            TextLabel4.Text = "Komprimierung: AUS"
+            Print FMain.sKompri
+    Endif
+
 End
