@@ -2,7 +2,7 @@
 Title=Data-Backup
 Startup=TrayIconTrick
 Icon=Icon1.png
-Version=0.1.4
+Version=0.1.5
 Component=gb.image
 Component=gb.gtk3
 Component=gb.form
@@ -22,7 +22,7 @@ Vendor=Mintnix
 Address=pcspezialist@arcor.de
 Url=www.openyourlinux.blogspot.de
 License=General Public License
-PackageName=data-backup-0.1.3
+PackageName=data-backup-0.1.5
 Packager=1
 Systems=ubuntu
 Menus=ubuntu:"Applications/File Management"

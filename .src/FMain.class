@@ -1,21 +1,21 @@
 ' Gambas class file
 
 '' Variablen festlegen
-Static Public Version As String = Application.version
-Public sSpeicherort As String
-Public sSpeicherpfad As String = User.Home
-Public sBackupquelle As String
-Public sZieldatei As String
-Static Public sKompri As Integer
+Static Public Version As String = Application.version           'Versionsstring
+Public sSpeicherort As String                                   'Backupordner
+Public sSpeicherpfad As String = User.Home                      'Pfad für Backupordner
+Public sBackupquelle As String                                  'Ordner und Dateien, die gesichert werden
+Public sZieldatei As String                                     'Dateiname des Backups
+Static Public sKompri As Integer                                'Komprimierung
+Public iZ As Integer = 1                                        'Zip-Zahl
+Public bOextDat As Boolean                                      'externer Datenträger
 
 
 
 '' Programmfunktionen hinzufügen
 Public Sub Form_Open()
   ' Was soll passiert bei Start?
-  sSpeicherort = "DATA-BACKUP"
-  sZieldatei = "BACKUP_" & Year(Now) & "-" & Month(Now) & "-" & Day(Now) & ".tar"
-  
+   sSpeicherort = "DATA-BACKUP"
   'Ladefunktion
   Dim hFile As Stream
   Dim sLine1 As String    ' Ladetextzeile
@@ -32,17 +32,22 @@ Public Sub Form_Open()
    Line Input #hFile, sLine1
    Line Input #hFile, sLine2
    Line Input #hFile, sLine3
-   Print sLine1
-   Print sLine2
-   Print sLine3
+   'Print sLine1
+   'Print sLine2
+   'Print sLine3
    sLine1 = Replace(sLine1, ",", " ")
-   Print sLine1
+   Print "Folgende Dateien und Ordner werden gesichert:  " & sLine1
    sBackupquelle = " " & sLine1     'hier ein Leerzeichen einfügen, sonst klemmt es
    If sLine2 <= " " Then sSpeicherpfad = sSpeicherpfad Else sSpeicherpfad = sLine2
-   Print sSpeicherpfad
+   'Print sSpeicherpfad
    If sLine3 = "1" Then sKompri = 1 Else sKompri = 0
-   Print sKompri
-   
+   Print "Komprimierung ein oder aus: " & sKompri
+   'ext. Speicherort prüfen
+   If Exist(sLine2) = False Then
+         Message.Warning("Zugriff auf den Backup-Ordner nicht möglich.\n\n Externer Datenträger eventuell nicht angeschlossen?\n\n Bitte anschließen und das Programm nochmal neu starten, oder\n in den Einstellungen einen anderen Speicherort auswählen.") 
+         bOextDat = True
+   Endif
+  
 End
 
 Public Sub FirstInit()
@@ -53,17 +58,29 @@ End
 Public Sub BackItUp()
   'Backup starten
   Dim bOk As Boolean
-
+  Dim sGleich As String
+    'iZ = 1
+    If sKompri = 0 Then sZieldatei = "BACKUP_" & Year(Now) & "-" & Month(Now) & "-" & Day(Now) & ".tar"
+    If sKompri = 1 Then sZieldatei = iZ & "_" & "BACKUP_" & Year(Now) & "-" & Month(Now) & "-" & Day(Now) & ".tar.gz"
+    
   Print sSpeicherpfad
   Print sZieldatei
   Print sSpeicherort
   Print sBackupquelle
   Print sSpeicherort &/ sZieldatei
-  'Speicherort anlegen, falls nicht da
+  
+    'ext. Datenträger für Backup ja, aber fehlt
+    If bOextDat = True Then 
+        TrayIcon1.Delete
+        Print "Programm wird beendet."
+        Me.Close()
+   Else 
+    
+   'Speicherort anlegen, falls nicht da
    If Exist(sSpeicherpfad &/ sSpeicherort) = False Then
     Message("Backup-Verzeichnis wird angelegt unter: " & sSpeicherpfad &/ sSpeicherort, "OK") 
     Shell "mkdir " & sSpeicherpfad &/ sSpeicherort Wait 
-  Endif
+   Endif
 
   If sBackupquelle = "" Or If sBackupquelle = " " Then 
      Button1.Width = 308
@@ -82,15 +99,30 @@ Public Sub BackItUp()
      TrayIcon1.Picture = Picture.Load("Icon2.png")
      'TrayIcon1.Picture.Refresh
      Wait 1 
-     Shell "tar -uvf " & sSpeicherpfad &/ sSpeicherort &/ sZieldatei & sBackupquelle Wait 
+     If sKompri = 0 Then Shell "tar -uvf " & sSpeicherpfad &/ sSpeicherort &/ sZieldatei & sBackupquelle Wait 
+     If sKompri = 1 Then
+         If sZieldatei == iZ & "_" & "BACKUP_" & Year(Now) & "-" & Month(Now) & "-" & Day(Now) & ".tar.gz" Then
+            iZ = iZ + 1
+            sZieldatei = iZ & "_" & "BACKUP_" & Year(Now) & "-" & Month(Now) & "-" & Day(Now) & ".tar.gz" 
+            Print "Es wird nach einer freien Nummer gesucht" & " Nummer: " & iZ 
+            BackItUp 
+            Print "Nummer: " & iZ
+         Endif 
+         Wait 
+         Return   
+     Endif
      bOk = True
+     
   Else If Not Exist(sSpeicherpfad &/ sSpeicherort &/ sZieldatei) Then 
      Button1.Width = 308
      Button1.Background = &00FF0000
      Button1.Text = "Lege Backup an ..."
      TrayIcon1.Picture = Picture.Load("Icon2.png")
      Wait 1
-     Shell "tar -cvf " & sSpeicherpfad &/ sSpeicherort &/ sZieldatei & sBackupquelle Wait
+     If sKompri = 0 Then Shell "tar -cvf " & sSpeicherpfad &/ sSpeicherort &/ sZieldatei & sBackupquelle Wait
+     If sKompri = 1 Then 
+       Shell "tar -czf " & sSpeicherpfad &/ sSpeicherort &/ sZieldatei & sBackupquelle Wait
+     Endif 
      bOk = True
   Endif
 
@@ -106,6 +138,7 @@ Public Sub BackItUp()
     Wait 1
     'Menu8.Text = "Programm wieder anzeigen"
     Me.Visible = False
+  Endif 
   Endif 
 End 
 

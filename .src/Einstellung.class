@@ -42,6 +42,7 @@ Public Sub Button1_Click()
   Print DirBox1.Value
   If Speicherpfad <= " " Then Speicherpfad = User.Home 
   FMain.sSpeicherpfad = Speicherpfad
+  FMain.bOextDat = False
   
   sAuswahlArray = ListBox1.List
   Wait 
@@ -106,19 +107,6 @@ Public Sub ListBox1_Drop()
     ListBox1.Add(If(InStr(sFile, " "), Shell(sFile), sFile))  'man kann auch Shell$ statt Shell verwenden
   Next
 End
-
-' Public Sub FileView1_MouseDrag()
-  '' Das hat nicht funktioniert, weil das FileView eine eigene Funktion von Mouse_Drag hat. Das geht automatisch.
-'   'Drag n Drop Funktion - was soll an der Maus hängen?
-'   FileView1.Drag(FileView1.Current) 
-' 
-' End
-
-' Public Sub ListBox1_Drop()
-  '' Die eigentliche, ursprüngliche Funktion- das funktioniert auch.
-'   'Drag n Drop - das fliegt in das Array in der ListBox, gleich mit Gänsefüßchen 
-'   ListBox1.Add(Quote(FileView1.Dir &/ FileView1.Current))
-' End
 
 Public Sub ListBox1_DblClick()
   ' Element löschen mit Doppelklick

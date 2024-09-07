@@ -1,13 +1,15 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,59,38)
+  MoveScaled(0,0,74,38)
   Resizable = False
   { TextArea1 TextArea
-    MoveScaled(1,1,57,36)
+    MoveScaled(1,1,72,36)
     Font = Font["11"]
     Foreground = Color.DarkBlue
     Drop = False
-    Text = ("Starten des Backups erstellt eine neue Datei mit Namen \n'BACKUP_Jahr-Monat-Tag.tar' im Backup-Verzeichnis.\nStandart ist der Pfad '/home/user/DATA-BACKUP/', dieser\nkann aber auch in den Einstellungen geändert werden.\nExistiert die Backup-Datei bereits, so werden die \nausgewählten Dateien dem Backup hinzugefügt. Man \nbeachte, vorhandene Dateien im Backup werden nicht\nüberschrieben, sondern zusätzlich angehängt. \nSomit kann die Backupdatei schnell in ihrer Größe wachsen\nund entsprechend doppelte Einträge enthalten. \nBeim Widerherstellen aus der Archivdatei sollte dies \nbeachtet werden. \n\nIn späteren Programmversionen könnten fehlende \nFunktionen nachgereicht werden. Das Programm \nbefindet sich in einem frühen Zustand.")
+    Text = ("Starten des Backups erstellt eine neue Datei mit Namen\n\"BACKUP_Jahr-Monat-Tag.tar\"  im Backup-Verzeichnis.\n( bei Komprimierung lautet die Dateiendung .tar.gz )\n\nStandart ist der Pfad '/home/user/DATA-BACKUP/', \ndieser kann in den Einstellungen geändert werden.\n\nExistiert die Backup-Datei bereits, so werden die ausgewählten \nDateien dem Backup hinzugefügt. Man beachte, vorhandene\nDateien im Backup werden nicht überschrieben, sondern\nzusätzlich angehängt. Somit kann die Backupdatei schnell in \nihrer Größe wachsen und entsprechend doppelte Einträge\nenthalten. \n\nWurde Komprimierung in den Einstellunegn ausgewählt, so\nwerden Backups nummeriert. Bei jedem erneuten Backup,\nmit gleichem Datum, wird die Nummer hochgezählt und vor\ndie Backupdatei geschrieben. \nBeim Widerherstellen aus der Archivdatei sollte\ndies beachtet werden. \n\nIn späteren Programmversionen könnten fehlende \nFunktionen nachgereicht werden.")
+    Alignment = Align.Center
+    ScrollBar = Scroll.Vertical
   }
 }

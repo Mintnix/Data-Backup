@@ -22,11 +22,12 @@
     }
     { SwitchButton1 SwitchButton
       MoveScaled(24,22,8,4)
+      ToolTip = ("Komprimierung Ein- oder Ausschalten.")
     }
     { TextLabel4 TextLabel
       MoveScaled(1,22,21,4)
       Font = Font["10"]
-      ToolTip = ("Komprimierung ein- oder ausschalten")
+      ToolTip = ("Bei eingeschalteter Komprimierung werden\nmit Gzip gepackte Tar-Archive erstellt. Diese\nerhalten die Dateiendung  .tar.gz und eine\nvorangestellte Nummerierung. Gepackte Tar-\nArchive können nicht erweitert werden,\ndadurch werden zusätzliche Backups in \nseparaten Archivdateien angelegt. ")
       Text = ("Komprimierung: AUS")
       Alignment = Align.Left
     }
